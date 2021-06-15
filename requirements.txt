@@ -1,7 +1,7 @@
 dash
 pandas
 matplotlib
-tensorflow
+tensorflow-cpu
 Pillow
 plotly
 gunicorn
