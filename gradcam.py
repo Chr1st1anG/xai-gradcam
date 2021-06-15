@@ -7,12 +7,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-model_builder = keras.applications.xception.Xception
-img_size = (299, 299)
-preprocess_input = keras.applications.xception.preprocess_input
-decode_predictions = keras.applications.xception.decode_predictions
+model_builder = keras.applications.efficientnet.EfficientNetB0
+img_size = (224, 224)
+preprocess_input = keras.applications.efficientnet.preprocess_input
+decode_predictions = keras.applications.efficientnet.decode_predictions
 
-last_conv_layer_name = "block14_sepconv2_act"
+last_conv_layer_name = "top_activation"
 
 model = model_builder(weights="imagenet")
 
