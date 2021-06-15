@@ -2,6 +2,6 @@ dash
 pandas
 matplotlib
 tensorflow
-pillow
+Pillow
 plotly
 gunicorn
