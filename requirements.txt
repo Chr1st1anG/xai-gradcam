@@ -1,4 +1,7 @@
 dash
 pandas
+matplotlib
+tensorflow
+pillow
 plotly
 gunicorn
