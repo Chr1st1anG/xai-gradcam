@@ -33,18 +33,18 @@ app.layout = html.Div([
         # Allow multiple files to be uploaded
         multiple=False
     ),
-    html.Div(id='output-image-upload'),
+    dcc.Graph(
+        id='gradcam')
 ])
 
 
-@app.callback(Output('output-image-upload', 'children'),
+@app.callback(Output('gradcam', 'figure'),
               Input('upload-image', 'contents'))
 def update_output(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
-        img = gradcam(img)
-        img_str = img_to_base64(img)
-        return html.Img(src=img_str)
+        figure = gradcam(img)
+        return figure
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ from matplotlib import cm
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+import plotly.express as px
 
 model_builder = keras.applications.efficientnet.EfficientNetB0
 img_size = (224, 224)
@@ -97,4 +98,5 @@ def gradcam(img):
     img_array_pre = preprocess_input(img_array.copy())
     heatmap = make_gradcam_heatmap(img_array_pre)
     img = make_gradcam_output(img_array, heatmap)
-    return img
+    fig = px.imshow(img)
+    return fig
