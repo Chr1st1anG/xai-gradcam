@@ -18,7 +18,7 @@ def base64_to_img(img_string):
     return img
 
 
-def make_gradcam_graph(img):
+def make_img_graph(img,id):
     fig = go.Figure()
 
     # Constants
@@ -64,7 +64,7 @@ def make_gradcam_graph(img):
     )
 
     config = {
-        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'resetScale2d', 'lasso2d',
+        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d',
                                    'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian']}
 
     # Configure other layout
@@ -75,7 +75,7 @@ def make_gradcam_graph(img):
     )
 
     graph = dcc.Graph(
-        id='gradcam',
+        id=id,
         figure=fig,
         config=config)
 

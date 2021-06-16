@@ -5,8 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
-
-from utils import base64_to_img, make_gradcam_graph
+from utils import base64_to_img, make_img_graph
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -34,18 +33,37 @@ app.layout = html.Div([
         # Allow multiple files to be uploaded
         multiple=False
     ),
-    html.Div(id="gradcam-div")
+    html.Div([
+        html.Div(id="input-div", className="six columns"),
+        html.Div(id="gradcam-div", className="six columns")],
+        className="row"),
+
+    dcc.Store(id='img')
 
 ])
 
 
+@app.callback(Output('img', 'data'), Input('upload-image', 'contents'))
+def img_to_dcc(image_str):
+    return image_str
+
+
+@app.callback(Output('input-div', 'children'),
+              Input('img', 'data'))
+def set_input_img(image_str):
+    if image_str is not None:
+        img = base64_to_img(image_str)
+        graph = make_img_graph(img, "input")
+        return graph
+
+
 @app.callback(Output('gradcam-div', 'children'),
-              Input('upload-image', 'contents'))
+              Input('img', 'data'))
 def update_output(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
         img = gradcam(img)
-        graph = make_gradcam_graph(img)
+        graph = make_img_graph(img, "gradcam")
         return graph
 
 
