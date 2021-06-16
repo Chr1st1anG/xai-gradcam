@@ -1,19 +1,15 @@
-import os
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
 from matplotlib import cm
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import plotly.express as px
 
-model_builder = keras.applications.efficientnet.EfficientNetB0
+model_builder = keras.applications.mobilenet_v2.MobileNetV2
 img_size = (224, 224)
-preprocess_input = keras.applications.efficientnet.preprocess_input
-decode_predictions = keras.applications.efficientnet.decode_predictions
+preprocess_input = keras.applications.mobilenet_v2.preprocess_input
+decode_predictions = keras.applications.mobilenet_v2.decode_predictions
 
-last_conv_layer_name = "top_activation"
+last_conv_layer_name = "out_relu"
 
 model = model_builder(weights="imagenet")
 
@@ -68,11 +64,11 @@ def make_gradcam_heatmap(img_array, pred_index=None):
     return heatmap.numpy()
 
 
-def make_gradcam_output(img_array, heatmap, alpha=0.4):
+def make_gradcam_output(img, heatmap, alpha=0.4):
     # Rescale heatmap to a range 0-255
     heatmap = np.uint8(255 * heatmap)
 
-    img_array = img_array[0]
+    img_array = keras.preprocessing.image.img_to_array(img)
 
     # Use jet colormap to colorize heatmap
     jet = cm.get_cmap("jet")
@@ -97,6 +93,5 @@ def gradcam(img):
     img_array = get_img_array(img)
     img_array_pre = preprocess_input(img_array.copy())
     heatmap = make_gradcam_heatmap(img_array_pre)
-    img = make_gradcam_output(img_array, heatmap)
-    fig = px.imshow(img)
-    return fig
+    img = make_gradcam_output(img, heatmap)
+    return img
