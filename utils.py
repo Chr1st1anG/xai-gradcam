@@ -5,6 +5,7 @@ from PIL import Image
 import dash_core_components as dcc
 import plotly.graph_objects as go
 
+
 def img_to_base64(img):
     buffered = io.BytesIO()
     img.save(buffered, format="JPEG")
@@ -18,13 +19,13 @@ def base64_to_img(img_string):
     return img
 
 
-def make_img_graph(img,id):
+def make_img_graph(img, id):
     fig = go.Figure()
 
     # Constants
     img_width = 224
     img_height = 224
-    scale_factor = 3
+    scale_factor = 2
 
     fig.add_trace(
         go.Scatter(
@@ -77,6 +78,11 @@ def make_img_graph(img,id):
     graph = dcc.Graph(
         id=id,
         figure=fig,
-        config=config)
+        config=config,
+        style={
+            "width": "100%",
+            "height": "auto",
+            "border-radius": "5px"
+        })
 
     return graph

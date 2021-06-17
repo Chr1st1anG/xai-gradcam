@@ -1,0 +1,53 @@
+.upload-form {
+    width: 48vw;
+    height: 35px;
+    line-height: 35px;
+    border-width: 1px;
+    border-style: dashed;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.button-main {
+    margin-left: 32px;
+}
+
+.flexbox-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.space-top {
+    margin-top: 32px;
+}
+
+.container-shadow {
+   padding: 32px;
+   border-radius: 5px;
+   box-shadow: 13px 13px 26px #bebebe,
+    -13px -13px 26px #ffffff;
+}
+
+.slider {
+    width: 100%;
+    margin-right: 32px;
+}
+
+.container-img {
+    margin: 0 16px;
+    width: 50%;
+}
+
+.container-main {
+    width: auto;
+    height: auto;
+    margin: 5vh 20vw;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
