@@ -1,3 +1,5 @@
+
+import pandas as pd
 from matplotlib import cm
 import numpy as np
 import tensorflow as tf
@@ -25,6 +27,23 @@ def get_img_array(img):
     return array
 
 
+def extract_predictions(img_array):
+    img_array = get_img_array(img_array)
+    grad_model = tf.keras.models.Model(
+        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
+    )
+    last_conv_layer_output, preds = grad_model(img_array)
+
+    # get 5 highest classes
+    resulting_classes = decode_predictions(np.asarray(preds), top=5)
+    df = pd.DataFrame(columns=["class", "confidence"])
+    i = 0
+    for c in resulting_classes[0]:
+        df.loc[i] = [c[1], round(c[2], 5)] # round for better visibility
+        i += 1
+    return df
+
+
 def make_gradcam_heatmap(img_array, pred_index=None):
     # First, we create a model that maps the input image to the activations
     # of the last conv layer as well as the output predictions
@@ -40,6 +59,7 @@ def make_gradcam_heatmap(img_array, pred_index=None):
         if pred_index is None:
             pred_index = tf.argmax(preds[0])
         class_channel = preds[:, pred_index]
+
 
     # This is the gradient of the output neuron (top predicted or chosen)
     # with regard to the output feature map of the last conv layer
@@ -81,7 +101,7 @@ def make_gradcam_output(img, heatmap, alpha=0.4):
     jet_heatmap = keras.preprocessing.image.array_to_img(jet_heatmap)
     jet_heatmap = jet_heatmap.resize((img_array.shape[1], img_array.shape[0]))
     jet_heatmap = keras.preprocessing.image.img_to_array(jet_heatmap)
-
+    img_array = img_array[:,:,:3]
     # Superimpose the heatmap on original image
     superimposed_img = jet_heatmap * alpha + img_array
     superimposed_img = keras.preprocessing.image.array_to_img(superimposed_img)

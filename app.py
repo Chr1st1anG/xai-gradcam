@@ -1,8 +1,9 @@
-from gradcam import gradcam
+from gradcam import gradcam, extract_predictions
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 from dash.dependencies import Input, Output, State
 
 from utils import base64_to_img, make_img_graph
@@ -38,9 +39,28 @@ app.layout = html.Div([
         html.Div(id="gradcam-div", className="six columns")],
         className="row"),
 
-    dcc.Store(id='img')
+    dash_table.DataTable(
+        id='class_table',
+        columns=[
+            {'name': 'class', 'id': 'class'},
+            {'name': 'confidence', 'id': 'confidence'}
+        ],
+        row_selectable='single',  # get selected with State('class_table', 'selected_rows')
+        style_cell=dict(textAlign='left'),
+        style_header=dict(backgroundColor="paleturquoise"),
+        style_data=dict(backgroundColor="lavender")
+    ),
 
+    dcc.Store(id='img')
 ])
+
+
+@app.callback(Output('class_table', 'data'), Input('img', 'data'))
+def create_table(image_str):
+    if image_str is not None:
+        img = base64_to_img(image_str)
+        df = extract_predictions(img)
+        return df.to_dict('records')
 
 
 @app.callback(Output('img', 'data'), Input('upload-image', 'contents'))
