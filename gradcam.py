@@ -40,7 +40,7 @@ def extract_predictions(img_array):
     i = 0
     for c in resulting_classes[0]:
         df.loc[i] = [c[1].replace("_", " ").title(), round(
-            c[2], 5)]  # round for better visibility
+            float(c[2]), 5)]  # round for better visibility
         i += 1
     return df
 

@@ -21,9 +21,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 # Example: Get data of selected row
 # https://community.plotly.com/t/how-to-get-data-of-selected-rows-from-dash-datatable/32383
 
-# TODO: Get prediction data
-prediction_table = pd.read_csv('./assets/test.csv')
-
 server = app.server
 
 app.layout = html.Div([
