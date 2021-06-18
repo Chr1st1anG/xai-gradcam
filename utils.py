@@ -19,6 +19,13 @@ def base64_to_img(img_string):
     return img
 
 
+
+def byte_png_to_img(img_bytes):
+    img = Image.open(io.BytesIO(img_bytes))
+    return img
+
+
+
 def make_img_graph(img, id):
     fig = go.Figure()
 
@@ -27,14 +34,6 @@ def make_img_graph(img, id):
     img_height = 224
     scale_factor = 2
 
-    fig.add_trace(
-        go.Scatter(
-            x=[0, img_width * scale_factor],
-            y=[0, img_height * scale_factor],
-            mode="markers",
-            marker_opacity=0
-        )
-    )
 
     # Configure axes
     fig.update_xaxes(
@@ -65,8 +64,8 @@ def make_img_graph(img, id):
     )
 
     config = {
-        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d',
-                                   'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian']}
+        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d'],
+        'modeBarButtonsToAdd': ['drawrect', 'drawclosedpath','eraseshape']}
 
     # Configure other layout
     fig.update_layout(
@@ -74,6 +73,21 @@ def make_img_graph(img, id):
         height=img_height * scale_factor,
         margin={"l": 0, "r": 0, "t": 0, "b": 0},
     )
+
+    fig.update_layout(dragmode='drawrect',
+                      # style of new shapes
+                      newshape=dict(line_color='black',
+                                    fillcolor='black',
+                                    opacity=1))
+
+    fig.update_layout(dragmode='drawclosedpath',
+                      # style of new shapes
+                      newshape=dict(line_color='black',
+                                    fillcolor='black',
+                                    opacity=1))
+
+    fig.layout.xaxis.fixedrange = True
+    fig.layout.yaxis.fixedrange = True
 
     graph = dcc.Graph(
         id=id,

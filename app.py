@@ -1,19 +1,15 @@
-from dash_html_components.A import A
-from dash_html_components.Div import Div
-from dash_html_components.H3 import H3
-from dash_html_components.P import P
-from pandas.io.formats import style
-from gradcam import gradcam, extract_predictions
 
+
+from gradcam import gradcam, extract_predictions
+import plotly.graph_objects as go
 import dash
 import dash_table
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
-from utils import base64_to_img, make_img_graph
+from utils import base64_to_img, make_img_graph, byte_png_to_img
 
-import pandas as pd
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -37,8 +33,8 @@ app.layout = html.Div([
                 # Allow multiple files to be uploaded
                 multiple=False
             ),
-            html.Button("Predict", id="button-predict",
-                        className="button-main")
+            #html.Button("Predict", id="button-predict",
+            #            className="button-main")
         ], className="flexbox-row"),
         html.Div(
             dash_table.DataTable(
@@ -80,50 +76,63 @@ app.layout = html.Div([
         html.Div([
             html.Div([
                 html.H6("Image"),
-                html.Div(id="input-div"),
+                html.Div(dcc.Graph(
+                    id="input_graph",
+                    figure={},
+                    style={'display': 'none'},
+                ),
+                    id="input-div"),
             ], className="container-img"),
             html.Div([
                 html.H6("Heatmap"),
-                html.Div(id="gradcam-div"),
+                html.Div(dcc.Graph(
+                    id="heatmap_graph",
+                    figure={},
+                    style={'display': 'none'},
+                ), id="gradcam-div"),
             ], className="container-img"
             ),
         ], className="flexbox-row space-top"),
     ], className="container-shadow"),
-    dcc.Store(id='img')
 ], className="container-main flexbox"
 )
 
 
-@app.callback(Output('class_table', 'data'), Input('img', 'data'))
-def create_table(image_str):
-    if image_str is not None:
-        img = base64_to_img(image_str)
+@app.callback(Output('class_table', 'data'),
+              Input('input_graph', 'relayoutData'),
+              State('input_graph', 'figure'))
+def create_table(relayoutData, figure_dict):
+    if figure_dict:
+        figure = go.Figure(figure_dict)
+        img = figure.to_image(format="png")
+        img = byte_png_to_img(img)
         df = extract_predictions(img)
         return df.to_dict('records')
 
 
-@ app.callback(Output('img', 'data'), Input('upload-image', 'contents'))
-def img_to_dcc(image_str):
-    return image_str
 
-
-@ app.callback(Output('input-div', 'children'),
-               Input('img', 'data'))
+@app.callback(Output('input-div', 'children'),
+              Input('upload-image', 'contents'))
 def set_input_img(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
-        graph = make_img_graph(img, "input")
+        graph = make_img_graph(img, "input_graph")
         return graph
 
 
-@ app.callback(Output('gradcam-div', 'children'),
-               Input('img', 'data'))
-def update_output(image_str):
-    if image_str is not None:
-        img = base64_to_img(image_str)
-        img = gradcam(img)
+@app.callback(Output('gradcam-div', 'children'),
+              Input("button-gradcam", "n_clicks"),
+              State('input_graph', 'figure'),
+              State('class_table', 'selected_rows'))
+def update_output(n_clicks, figure_dict, selected_class):
+    if figure_dict and n_clicks:
+        figure = go.Figure(figure_dict)
+        img = figure.to_image(format="png")
+        img = byte_png_to_img(img)
+        img = gradcam(img, selected_class)
         graph = make_img_graph(img, "gradcam")
         return graph
+
 
 
 if __name__ == '__main__':

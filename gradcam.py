@@ -5,12 +5,12 @@ import tensorflow as tf
 from tensorflow import keras
 import plotly.express as px
 
-model_builder = keras.applications.mobilenet_v2.MobileNetV2
+model_builder = keras.applications.efficientnet.EfficientNetB0
 img_size = (224, 224)
-preprocess_input = keras.applications.mobilenet_v2.preprocess_input
-decode_predictions = keras.applications.mobilenet_v2.decode_predictions
+preprocess_input = keras.applications.efficientnet.preprocess_input
+decode_predictions = keras.applications.efficientnet.decode_predictions
 
-last_conv_layer_name = "out_relu"
+last_conv_layer_name = "top_activation"
 
 model = model_builder(weights="imagenet")
 
@@ -28,14 +28,11 @@ def get_img_array(img):
 
 def extract_predictions(img_array):
     img_array = get_img_array(img_array)
-    grad_model = tf.keras.models.Model(
-        [model.inputs], [model.get_layer(
-            last_conv_layer_name).output, model.output]
-    )
-    last_conv_layer_output, preds = grad_model(img_array)
+
+    preds = model.predict(img_array)
 
     # get 5 highest classes
-    resulting_classes = decode_predictions(np.asarray(preds), top=5)
+    resulting_classes = decode_predictions(preds, top=5)
     df = pd.DataFrame(columns=["class", "confidence"])
     i = 0
     for c in resulting_classes[0]:
@@ -60,6 +57,10 @@ def make_gradcam_heatmap(img_array, pred_index=None):
 
         if pred_index is None:
             pred_index = tf.argmax(preds[0])
+        else:
+            selected_pred = tf.squeeze(preds)
+            top_five_classes = tf.argsort(selected_pred)[-5:][::-1]
+            pred_index = top_five_classes[pred_index]
         class_channel = preds[:, pred_index]
 
     # This is the gradient of the output neuron (top predicted or chosen)
@@ -110,9 +111,9 @@ def make_gradcam_output(img, heatmap, alpha=0.4):
     return superimposed_img
 
 
-def gradcam(img):
+def gradcam(img, selected_class):
     img_array = get_img_array(img)
     img_array_pre = preprocess_input(img_array.copy())
-    heatmap = make_gradcam_heatmap(img_array_pre)
+    heatmap = make_gradcam_heatmap(img_array_pre, selected_class)
     img = make_gradcam_output(img, heatmap)
     return img
