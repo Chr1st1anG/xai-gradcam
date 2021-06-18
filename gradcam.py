@@ -5,6 +5,8 @@ import tensorflow as tf
 from tensorflow import keras
 import plotly.express as px
 
+tf.config.threading.set_inter_op_parallelism_threads(1)
+
 model_builder = keras.applications.efficientnet.EfficientNetB0
 img_size = (224, 224)
 preprocess_input = keras.applications.efficientnet.preprocess_input
