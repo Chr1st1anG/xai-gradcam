@@ -56,16 +56,29 @@ app.layout = html.Div([
                 dcc.Slider(
                     id="slider_blocks",
                     min=0,
-                    max=4,
+                    max=17,
                     step=None,
                     marks={
-                        0: 'Conv 1',
-                        1: 'Conv 2',
-                        2: 'Conv 3',
-                        3: 'Conv 4',
-                        4: 'Conv 5'
+                        0: 'stem',
+                        1: '1a',
+                        2: '2a',
+                        3: '2b',
+                        4: '3a',
+                        5: '3b',
+                        6: '4a',
+                        7: '4b',
+                        8: '4c',
+                        9: '5a',
+                        10: '5b',
+                        11: '5c',
+                        12: '6a',
+                        13: '6b',
+                        14: '6c',
+                        15: '6d',
+                        16: '7a',
+                        17: 'top'
                     },
-                    value=4
+                    value=17
                 ), className="slider",
             ),
             html.Button("Compute", id="button-gradcam",
@@ -123,13 +136,14 @@ def set_input_img(image_str):
 @app.callback(Output('gradcam-div', 'children'),
               Input("button-gradcam", "n_clicks"),
               State('input_graph', 'figure'),
-              State('class_table', 'selected_rows'))
-def update_output(n_clicks, figure_dict, selected_class):
+              State('class_table', 'selected_rows'),
+              State('slider_blocks', 'value'))
+def update_output(n_clicks, figure_dict, selected_class, slider_value):
     if figure_dict and n_clicks:
         figure = go.Figure(figure_dict)
         img = figure.to_image(format="png")
         img = byte_png_to_img(img)
-        img = gradcam(img, selected_class)
+        img = gradcam(img, selected_class, slider_value)
         graph = make_img_graph(img, "gradcam")
         return graph
 

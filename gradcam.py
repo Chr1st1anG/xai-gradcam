@@ -10,9 +10,27 @@ img_size = (224, 224)
 preprocess_input = keras.applications.efficientnet.preprocess_input
 decode_predictions = keras.applications.efficientnet.decode_predictions
 
-last_conv_layer_name = "top_activation"
 
 model = model_builder(weights="imagenet")
+
+layer_names = ["stem_activation",
+"block1a_project_bn",
+"block2a_project_bn",
+"block2b_add",
+"block3a_project_bn",
+"block3b_add",
+"block4a_project_bn",
+"block4b_add",
+"block4c_add",
+"block5a_project_bn",
+"block5b_add",
+"block5c_add",
+"block6a_project_bn",
+"block6b_add",
+"block6c_add",
+"block6d_add",
+"block7a_project_bn",
+"top_activation"]
 
 
 def get_img_array(img):
@@ -42,12 +60,13 @@ def extract_predictions(img_array):
     return df
 
 
-def make_gradcam_heatmap(img_array, pred_index=None):
+def make_gradcam_heatmap(img_array, pred_index=None, layer_index=-1):
+    layer_name = layer_names[layer_index]
     # First, we create a model that maps the input image to the activations
     # of the last conv layer as well as the output predictions
     grad_model = tf.keras.models.Model(
         [model.inputs], [model.get_layer(
-            last_conv_layer_name).output, model.output]
+            layer_name).output, model.output]
     )
 
     # Then, we compute the gradient of the top predicted class for our input image
@@ -111,9 +130,10 @@ def make_gradcam_output(img, heatmap, alpha=0.4):
     return superimposed_img
 
 
-def gradcam(img, selected_class):
+def gradcam(img, selected_class=None, layer_index=-1):
+    img = img.convert('RGB')
     img_array = get_img_array(img)
     img_array_pre = preprocess_input(img_array.copy())
-    heatmap = make_gradcam_heatmap(img_array_pre, selected_class)
+    heatmap = make_gradcam_heatmap(img_array_pre, selected_class, layer_index)
     img = make_gradcam_output(img, heatmap)
     return img
