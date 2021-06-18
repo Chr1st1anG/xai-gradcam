@@ -81,8 +81,8 @@ app.layout = html.Div([
                     value=17
                 ), className="slider",
             ),
-            html.Button("Compute", id="button-gradcam",
-                        className="button-main"),
+            #html.Button("Compute", id="button-gradcam",
+             #           className="button-main"),
         ], className="flexbox-row"
         ),
 
@@ -135,12 +135,13 @@ def set_input_img(image_str):
 
 
 @app.callback(Output('gradcam-div', 'children'),
-              Input("button-gradcam", "n_clicks"),
-              State('input_graph', 'figure'),
-              State('class_table', 'selected_rows'),
-              State('slider_blocks', 'value'))
-def update_output(n_clicks, figure_dict, selected_class, slider_value):
-    if figure_dict and n_clicks:
+             #Input("button-gradcam", "n_clicks"),
+              Input('input_graph', 'figure'),
+              Input('class_table', 'selected_rows'),
+              Input('slider_blocks', 'value'),
+              Input('input_graph', 'relayoutData'))
+def update_output(figure_dict, selected_class, slider_value, relayoutData):
+    if figure_dict:# and n_clicks:
         figure = go.Figure(figure_dict)
         img = figure.to_image(format="png")
         img = byte_png_to_img(img)
