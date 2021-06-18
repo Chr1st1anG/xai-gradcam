@@ -25,6 +25,14 @@ def byte_png_to_img(img_bytes):
     return img
 
 
+def resize_img(img, max_width=800):
+    width, height = img.size
+    if width > max_width:
+        ratio = width / height
+        new_width = max_width
+        new_height = int(new_width / ratio)
+        img = img.resize((new_width, new_height))
+    return img
 
 def make_img_graph(img, id, drawable = False):
     fig = go.Figure()

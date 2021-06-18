@@ -8,7 +8,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
-from utils import base64_to_img, make_img_graph, byte_png_to_img
+from utils import base64_to_img, make_img_graph, byte_png_to_img, resize_img
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -129,6 +129,7 @@ def create_table(relayoutData, figure_dict):
 def set_input_img(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
+        img = resize_img(img, 600)
         graph = make_img_graph(img, "input_graph", True)
         return graph
 
@@ -146,7 +147,6 @@ def update_output(n_clicks, figure_dict, selected_class, slider_value):
         img = gradcam(img, selected_class, slider_value)
         graph = make_img_graph(img, "gradcam")
         return graph
-
 
 
 if __name__ == '__main__':
