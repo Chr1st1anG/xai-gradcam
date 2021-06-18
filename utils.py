@@ -26,7 +26,7 @@ def byte_png_to_img(img_bytes):
 
 
 
-def make_img_graph(img, id):
+def make_img_graph(img, id, drawable = False):
     fig = go.Figure()
 
     # Constants
@@ -64,8 +64,11 @@ def make_img_graph(img, id):
     )
 
     config = {
-        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d'],
-        'modeBarButtonsToAdd': ['drawrect', 'drawclosedpath','eraseshape']}
+        'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d']
+        }
+
+    if drawable:
+        config['modeBarButtonsToAdd'] = ['drawrect', 'drawclosedpath', 'eraseshape']
 
     # Configure other layout
     fig.update_layout(

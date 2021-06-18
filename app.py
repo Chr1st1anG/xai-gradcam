@@ -129,7 +129,7 @@ def create_table(relayoutData, figure_dict):
 def set_input_img(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
-        graph = make_img_graph(img, "input_graph")
+        graph = make_img_graph(img, "input_graph", True)
         return graph
 
 
