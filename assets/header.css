@@ -1,11 +1,15 @@
 .upload-form {
-    width: 48vw;
+    width: 100%;
     height: 35px;
     line-height: 35px;
     border-width: 1px;
     border-style: dashed;
     border-radius: 5px;
     text-align: center;
+}
+
+#upload-image {
+    width: 100%;
 }
 
 .button-main {
@@ -32,12 +36,12 @@
 
 .slider {
     width: 100%;
-    margin-right: 32px;
 }
 
 .container-img {
     margin: 0 16px;
     width: 50%;
+    /* display: none; */
 }
 
 .container-main {
@@ -50,4 +54,54 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.img-architecture {
+    width: 94%;
+    height: auto;
+    font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.conv-block {
+    width: auto;
+    height: auto;
+    /* margin: 16px 4px 16px 0; */
+    margin: 16px 0;
+    background: #f3f3f3;
+    border-radius: 5px;
+    writing-mode: tb-rl;
+}
+
+.conv-block-text {
+    text-align: center;
+    transform: rotate(180deg);
+    padding: 8px;
+}
+
+.arrow {
+    height: 2px;
+    width: 100%;
+    background: #000000;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+.header-info img {
+    width: 20px;
+    height: auto;
+    display: inline;
+    margin-left: 6px;
+}
+
+.tooltip {
+    color: #000000;
+    background: #f3f3f3;
+    padding: 8px;
+    margin: 4px;
+    border-radius: 5px;
 }

@@ -19,7 +19,6 @@ def base64_to_img(img_string):
     return img
 
 
-
 def byte_png_to_img(img_bytes):
     img = Image.open(io.BytesIO(img_bytes))
     return img
@@ -34,14 +33,14 @@ def resize_img(img, max_width=800):
         img = img.resize((new_width, new_height))
     return img
 
-def make_img_graph(img, id, drawable = False):
+
+def make_img_graph(img, id, drawable=False):
     fig = go.Figure()
 
     # Constants
     img_width = 224
     img_height = 224
     scale_factor = 2
-
 
     # Configure axes
     fig.update_xaxes(
@@ -73,10 +72,11 @@ def make_img_graph(img, id, drawable = False):
 
     config = {
         'modeBarButtonsToRemove': ['autoScale2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'lasso2d']
-        }
+    }
 
     if drawable:
-        config['modeBarButtonsToAdd'] = ['drawrect', 'drawclosedpath', 'eraseshape']
+        config['modeBarButtonsToAdd'] = [
+            'drawrect', 'drawclosedpath', 'eraseshape']
 
     # Configure other layout
     fig.update_layout(
@@ -104,10 +104,11 @@ def make_img_graph(img, id, drawable = False):
         id=id,
         figure=fig,
         config=config,
-        style={
-            "width": "100%",
-            "height": "auto",
-            "border-radius": "5px"
-        })
+        # style={
+        #     "width": "100%",
+        #     "height": "auto",
+        #     "border-radius": "5px"
+        # })
+    )
 
     return graph

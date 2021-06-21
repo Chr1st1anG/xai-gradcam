@@ -16,23 +16,23 @@ decode_predictions = keras.applications.efficientnet.decode_predictions
 model = model_builder(weights="imagenet")
 
 layer_names = ["stem_activation",
-"block1a_project_bn",
-"block2a_project_bn",
-"block2b_add",
-"block3a_project_bn",
-"block3b_add",
-"block4a_project_bn",
-"block4b_add",
-"block4c_add",
-"block5a_project_bn",
-"block5b_add",
-"block5c_add",
-"block6a_project_bn",
-"block6b_add",
-"block6c_add",
-"block6d_add",
-"block7a_project_bn",
-"top_activation"]
+               "block1a_project_bn",
+               "block2a_project_bn",
+               "block2b_add",
+               "block3a_project_bn",
+               "block3b_add",
+               "block4a_project_bn",
+               "block4b_add",
+               "block4c_add",
+               "block5a_project_bn",
+               "block5b_add",
+               "block5c_add",
+               "block6a_project_bn",
+               "block6b_add",
+               "block6c_add",
+               "block6d_add",
+               "block7a_project_bn",
+               "top_activation"]
 
 
 def get_img_array(img):
@@ -57,7 +57,7 @@ def extract_predictions(img_array):
     i = 0
     for c in resulting_classes[0]:
         df.loc[i] = [c[1].replace("_", " ").title(), round(
-            float(c[2]), 5)]  # round for better visibility
+            float(c[2]), 3)]  # round for better visibility
         i += 1
     return df
 
