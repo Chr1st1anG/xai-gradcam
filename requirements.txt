@@ -6,3 +6,4 @@ Pillow
 plotly
 gunicorn
 kaleido
+dash_bootstrap_components
