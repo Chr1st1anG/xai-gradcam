@@ -78,24 +78,24 @@ def make_img_graph(img, id, drawable=False):
         config['modeBarButtonsToAdd'] = [
             'drawrect', 'drawclosedpath', 'eraseshape']
 
+        fig.update_layout(dragmode='drawrect',
+                          # style of new shapes
+                          newshape=dict(line_color='black',
+                                        fillcolor='black',
+                                        opacity=1))
+
+        fig.update_layout(dragmode='drawclosedpath',
+                          # style of new shapes
+                          newshape=dict(line_color='black',
+                                        fillcolor='black',
+                                        opacity=1))
+
     # Configure other layout
     fig.update_layout(
         width=img_width * scale_factor,
         height=img_height * scale_factor,
         margin={"l": 0, "r": 0, "t": 0, "b": 0},
     )
-
-    fig.update_layout(dragmode='drawrect',
-                      # style of new shapes
-                      newshape=dict(line_color='black',
-                                    fillcolor='black',
-                                    opacity=1))
-
-    fig.update_layout(dragmode='drawclosedpath',
-                      # style of new shapes
-                      newshape=dict(line_color='black',
-                                    fillcolor='black',
-                                    opacity=1))
 
     fig.layout.xaxis.fixedrange = True
     fig.layout.yaxis.fixedrange = True
