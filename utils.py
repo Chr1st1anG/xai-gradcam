@@ -38,9 +38,9 @@ def make_img_graph(img, id, drawable=False):
     fig = go.Figure()
 
     # Constants
-    img_width = 224
-    img_height = 224
-    scale_factor = 2
+    img_width = 600
+    img_height = 600
+    scale_factor = 0.75
 
     # Configure axes
     fig.update_xaxes(
