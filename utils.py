@@ -84,12 +84,6 @@ def make_img_graph(img, id, drawable=False):
                                         fillcolor='black',
                                         opacity=1))
 
-        fig.update_layout(dragmode='drawclosedpath',
-                          # style of new shapes
-                          newshape=dict(line_color='black',
-                                        fillcolor='black',
-                                        opacity=1))
-
     # Configure other layout
     fig.update_layout(
         width=img_width * scale_factor,
