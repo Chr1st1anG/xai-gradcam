@@ -198,11 +198,91 @@ app.layout = html.Div([
         html.Summary(html.H4("How does it work?"),
                      style={"margin-bottom": "12px"}),
         html.Div([
-            html.H5("Grad-CAM"),
-            html.P("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."),
-            html.H5("Perturbation"),
-            html.P("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")
-        ], className="container-shadow"),
+            html.Div([
+                html.H3("Grad-CAM"),
+                html.P("Grad-CAM is a technique to produce visual explanations for decisions of CNNs. It highlights the important regions in the image for predicting a specific class."),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_1.png"),
+                         className="img-explanation"),
+                    html.Img(src=app.get_asset_url("gc_2.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5("1. Forward propagation", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_3.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "2. Compute the gradient of the score for the selected class with respect to the last feature map activations", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_4.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "3. Take the mean of each channel of the gradient the get the channel importance", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_5.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "4. Multiply each feature map with the channel importance value", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_6.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "5. Add all the feature maps together to obtain a one dimensional map", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_7.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "6. Pass it through a ReLU activation to get rid of the negative values", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_8.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "7.  Normalize all values between 0 and 1", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_9.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "8. Resize the heatmap to original image size", className="space-top"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("gc_10.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.A("Source",
+                       href="https://arxiv.org/abs/1610.02391"),
+            ], className="container-shadow"),
+            html.Div([
+                html.H3("Perturbation"),
+                html.P(
+                    "Core algorithmic logic is dependent on random or carefully chosen changes to features in the input data instance. Perturbation can be used to evaluate the importance of single features of the feature space used by the AI."),
+                html.Div([
+                    html.Img(src=app.get_asset_url("p_1.png"),
+                         className="img-explanation"),
+                ], className="flexbox-explanation"),
+                html.H5(
+                    "Popular Perturbation methods"),
+                html.Li(
+                    "Masking & Occlusion: greying/whiting out regions of images"),
+                html.Li(
+                    "Partially substituting features: Colour changing, setting values to zero, filling operations, random value changes"),
+                html.Li("Changing feature correlations"),
+                html.Li("Feature shuffling/replacing"),
+                html.P(
+                    "Perturbation focuses on changing the input data instance to get insights about a model."),
+                html.Div([
+                    html.Img(src=app.get_asset_url("p_2.png"),
+                         className="img-explanation", style={"height": "50vh"}),
+                ], className="flexbox-explanation"),
+                html.A("Source",
+                       href="https://arxiv.org/pdf/2006.11371.pdf"),
+            ], className="container-shadow space-top"),
+        ]),
     ], className="space-top"),
 ], className="container-main flexbox"
 )

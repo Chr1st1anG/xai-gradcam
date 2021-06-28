@@ -3,6 +3,11 @@ a {
     font-weight: 600;
 }
 
+h3 {
+    color: #4c6ff5;
+    margin-bottom: 12px;
+}
+
 h4 {
     margin-bottom: 12px;
 }
@@ -145,4 +150,17 @@ details summary > * {
 }
 .rc-slider-handle-active:active {
   border-color: #4c6ff5;
+}
+
+.flexbox-explanation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.img-explanation {
+    width: auto;
+    max-width: 90%;
+    height: 30vh;
+    margin: 16px
 }
