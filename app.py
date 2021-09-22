@@ -1,14 +1,15 @@
 import dash_bootstrap_components as dbc
 from dash_html_components.P import P
-from gradcam import gradcam, extract_predictions
 import plotly.graph_objects as go
 import dash
 import dash_table
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
+from PIL import Image
 
 from utils import base64_to_img, make_img_graph, byte_png_to_img, resize_img
+from gradcam import gradcam, extract_predictions
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "Visual Analytics"
@@ -306,8 +307,12 @@ def set_input_img(image_str):
     if image_str is not None:
         img = base64_to_img(image_str)
         img = resize_img(img, 600)
-        graph = make_img_graph(img, "input_graph", True)
-        return graph
+    else:
+        img = Image.open(open("assets/initial_picture.jpg", 'rb'))
+    graph = make_img_graph(img, "input_graph", True)
+    return graph
+
+
 
 
 @app.callback(Output('gradcam-div', 'children'),
@@ -326,4 +331,4 @@ def update_output(figure_dict, selected_class, slider_value, relayoutData):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
