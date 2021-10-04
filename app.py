@@ -309,10 +309,9 @@ def set_input_img(image_str):
         img = resize_img(img, 600)
     else:
         img = Image.open(open("assets/initial_picture.jpg", 'rb'))
+        img = resize_img(img, 600)
     graph = make_img_graph(img, "input_graph", True)
     return graph
-
-
 
 
 @app.callback(Output('gradcam-div', 'children'),
